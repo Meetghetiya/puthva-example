@@ -46,38 +46,32 @@
 #         message, "Sorry, {} command not found!\nPlease use /help to find all commands.".format(command))
 
 
-import telebot
 
-# Replace 'YOUR_TELEGRAM_BOT_TOKEN' with your actual Telegram bot token
-bot = telebot.TeleBot('6207495158:AAFaw81_BaW2bVMae73wuZcjsrGqVO--0ZE')
+from flask import Flask, request
+import requests
 
-@bot.message_handler(commands=['start'])
-def send_welcome(message):
-    bot.reply_to(message, "Hello! I am your bot. Type something, and I'll respond.")
+app = Flask(__name__)
 
-@bot.message_handler(func=lambda message: True)
-def echo_all(message):
-    # Replace the following line with your bot's logic to generate a response
-    bot.send_message(message.chat.id, "This is a dummy response.")
+# Replace 'YOUR_BOT_TOKEN' with your actual Telegram bot token
+BOT_TOKEN = '6207495158:AAFaw81_BaW2bVMae73wuZcjsrGqVO--0ZE'
+TELEGRAM_API_BASE_URL = f'https://api.telegram.org/bot{BOT_TOKEN}/'
 
-# Replace 'YOUR_WEBHOOK_URL' with your actual webhook URL (e.g., https://yourdomain.com/webhook)
-webhook_url = 'https://vercel-puthva-example.vercel.app'
+@app.route('/')
+def index():
+    return "Telegram bot is up and running!"
 
-# Remove this line if you want to use polling instead of a webhook
-bot.remove_webhook()
+@app.route(f'/{BOT_TOKEN}', methods=['POST'])
+def handle_update():
+    data = request.get_json()
+    if 'message' in data:
+        chat_id = data['message']['chat']['id']
+        message_text = data['message']['text']
+        send_message(chat_id, f'You said: {message_text}')
+    return 'OK'
 
-# Set up the webhook
-bot.set_webhook(url=webhook_url)
-
-if __name__ == "__main__":
-    # Start the Flask app with a dummy route to avoid Heroku errors
-    from flask import Flask
-    app = Flask(__name__)
-
-    @app.route('/')
-    def index():
-        return "Bot is running!"
-
-    app.run(port=5000)
+def send_message(chat_id, text):
+    url = f'{TELEGRAM_API_BASE_URL}sendMessage'
+    data = {'chat_id': chat_id, 'text': text}
+    requests.post(url, json=data)
 
 
