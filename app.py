@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-TOKEN = "6272658692:AAEXRhMXTMD59nxOIXO4yDz-Pkgg-cQtOfQ"
+TOKEN = "6207495158:AAFaw81_BaW2bVMae73wuZcjsrGqVO--0ZE"
 URL = "https://vercel-puthva-example.vercel.app"
 OWNER = 846546194
 # SHORTEN_URL_ENDPOINT = os.getenv('SHORTEN_URL_ENDPOINT')
