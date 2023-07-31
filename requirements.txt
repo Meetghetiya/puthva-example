@@ -20,7 +20,7 @@ openai==0.26.4
 packaging==21.3
 pluggy==1.0.0
 pycodestyle==2.10.0
-pyparsing==3.0.9
+pyparsing==3.1.1
 pyTelegramBotAPI==4.10.0
 pytest==7.2.0
 python-dotenv==0.21.1
